@@ -1,0 +1,22 @@
+{
+    "name": "stilmark/parse",
+    "description": "Parse data for web applications.",
+    "type": "package",
+    "require": {
+        "php": "^7",
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Lund",
+            "email": "clund@stilmark.com",
+            "homepage": "http://stilmark.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Stilmark\\Parse\\": "src/"
+        }
+    }
+}
