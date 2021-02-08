@@ -17,7 +17,7 @@ class Str
         $this->str = mb_convert_encoding($str, 'UTF-8', 'auto');
     }
 
-    // Manipulators : Case
+    // Case manipulators
 
 	function upper()
 	{
@@ -50,7 +50,7 @@ class Str
 		return $this;
 	}
 
-	// Manipulators : alterations
+	// Content modifiers
 
 	function trim($chars = '')
 	{
@@ -115,7 +115,8 @@ class Str
 		// todo
 	}
 
-	// Properties
+
+	// String properties
 
 	function length()
 	{
