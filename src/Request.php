@@ -4,7 +4,7 @@ namespace Stilmark\Parse;
 
 class Request
 {
-	private $Vars;
+	private $vars;
 	public static $serverVars = [
 		'useragent' => 'HTTP_USER_AGENT',
 		'referer' => 'HTTP_REFERER',
@@ -16,7 +16,6 @@ class Request
 
 	function __construct() {
 
-		// Overwrite Cloudflare IP with actual remote IP
 		if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
@@ -26,7 +25,6 @@ class Request
 		}
 
 		$this->vars = array_merge(parse_url(self::url()), $this->vars);
-
 	}
 
 	public static function init() {
@@ -45,7 +43,6 @@ class Request
         } else {
         	return false;
         }
-
     }
 
 }
