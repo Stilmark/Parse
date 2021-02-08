@@ -9,25 +9,25 @@ class Str
 
     public static function make($str)
     {
-        return new Str($str);
+        return new Str( mb_convert_encoding($str, 'UTF-8', 'auto') );
     }
 
     public function __construct($str)
     {
-        $this->str = $str;
+        $this->str = mb_convert_encoding($str, 'UTF-8', 'auto');
     }
 
     // Manipulators : Case
 
 	function upper()
 	{
-		$this->str = strtoupper($this->str);
+		$this->str = mb_strtoupper($this->str);
 		return $this;
 	}
 
 	function lower()
 	{
-		$this->str = strtolower($this->str);
+		$this->str = mb_strtolower($this->str);
 		return $this;
 	}
 
@@ -39,12 +39,13 @@ class Str
 
 	function title()
 	{
-		$this->str = ucwords($this->str);
+		$this->str = mb_convert_case($this->str, MB_CASE_TITLE, "UTF-8");
 		return $this;
 	}
 
 	function camel() {
-		$this->title();
+		$firstChar = Str::make($this->str)->slice(0,1)->lower();
+		$this->title()->slice(1)->prepend($firstChar);
 		$this->str = preg_replace('/[^\da-z]/i', '', $this->str);
 		return $this;
 	}
@@ -69,9 +70,21 @@ class Str
 		return $this;
 	}
 
+	function trimInside()
+	{
+		$this->str = preg_replace('/\s+/', ' ', $this->str);
+		return $this;
+	}
+
 	function replace($find, $replace)
 	{
 		$this->str = str_replace($find, $replace, $this->str);
+		return $this;
+	}
+
+	function slice($start = 0, $length = null)
+	{
+		$this->str = mb_substr($this->str, $start, $length);
 		return $this;
 	}
 
@@ -87,16 +100,31 @@ class Str
 		return $this;
 	}
 
+	function repeat($str)
+	{
+		// todo
+	}
+
+	function padLeft($str)
+	{
+		// todo
+	}
+
+	function padRight($str)
+	{
+		// todo
+	}
+
 	// Properties
 
 	function length()
 	{
-		return strlen($this->str);
+		return mb_strlen($this->str);
 	}
 
 	function before($str)
 	{
-		return substr($this->str, 0, strpos($this->str, $str));
+		return mb_substr($this->str, 0, mb_strpos($this->str, $str));
 	}
 
 	function after($str) {
