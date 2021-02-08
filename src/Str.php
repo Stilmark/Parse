@@ -131,9 +131,38 @@ class Str
 		// todo
 	}
 
+	function truncate($length, $append)
+	{
+		$str =  $this->slice(0, $length);
+		if (!empty($append)) {
+			$str->append($append);
+		}
+		return $str;
+	}
+
+	function split($token)
+	{
+		return explode($token, $this->str);
+	}
+
+	function join($array)
+	{
+		return implode($this->str, $array);
+	}
+
 	function isEmpty()
 	{
 		return empty($this->str) ? true:false;
+	}
+
+	function is($str)
+	{
+		return ($this->str == $str) ? true:false;
+	}
+
+	function contains($str)
+	{
+		// todo
 	}
 
     public function __toString()
