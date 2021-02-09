@@ -100,19 +100,35 @@ class Str
 		return $this;
 	}
 
-	function repeat($str)
+	function wrap($left, $right)
 	{
-		// todo
+		$this->str = $left . $this->str . $right;
+		return $this;
 	}
 
-	function padLeft($str)
+	function wrapTag($tag)
 	{
-		// todo
+		return $this->wrap('<'.$tag.'>','</'.$tag.'>');
 	}
 
-	function padRight($str)
+	function repeat($str, $count = 0)
 	{
-		// todo
+		$this->str = str_repeat($str, $count);
+	}
+
+	function pad($str, $max_length)
+	{
+		$this->str = str_pad($this->str, $max_length, $str, STR_PAD_BOTH);
+	}
+
+	function padLeft($str, $max_length)
+	{
+		$this->str = str_pad($this->str, $max_length, $str, STR_PAD_LEFT);
+	}
+
+	function padRight($str, $max_length)
+	{
+		$this->str = str_pad($this->str, $max_length, $str);
 	}
 
 
