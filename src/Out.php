@@ -8,7 +8,7 @@ class Out
 {
 	public $out, $mimetype, $filename;
 
-	public static function json($array)
+	public static function json($array = [])
 	{
 		$obj = new Out;
 		$obj->mimetype = 'application/json';
@@ -16,7 +16,7 @@ class Out
 		return $obj;
 	}
 
-	public static function csv($array)
+	public static function csv($array = [])
 	{
 		$obj = new Out;
 		$obj->mimetype = 'text/csv';
@@ -24,6 +24,33 @@ class Out
 		foreach($array AS $row) {
 			$obj->out .= implode(';', array_values($row)).PHP_EOL;
 		}
+		return $obj;
+	}
+
+	public static function table($array = [], $attr = [])
+	{
+		$obj = new Out;
+		$obj->mimetype = 'text/html';
+		$table = Str::make();
+
+		// Header
+		foreach(array_keys(current($array)) AS $column) {
+			$table->append( Str::make($column)->wrapTag('td') );
+		}
+		$table->wrapTag('tr');
+
+		// Body
+		foreach($array AS $row) {
+			$tr = Str::make();
+			foreach($row AS $value) {
+				$tr->append( Str::make($value)->wrapTag('td') );
+			}
+			$tr->wrapTag('tr');
+			$table->append($tr);
+		}
+
+		$obj->out = (String) $table->wrapTag('table', $attr);
+
 		return $obj;
 	}
 

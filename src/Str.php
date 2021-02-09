@@ -7,12 +7,12 @@ class Str
 
 	public $str;
 
-    public static function make($str)
+    public static function make($str = '')
     {
         return new Str( mb_convert_encoding($str, 'UTF-8', 'auto') );
     }
 
-    public function __construct($str)
+    public function __construct($str = '')
     {
         $this->str = mb_convert_encoding($str, 'UTF-8', 'auto');
     }
@@ -106,9 +106,16 @@ class Str
 		return $this;
 	}
 
-	function wrapTag($tag)
+	function wrapTag($tag, $attr = [])
 	{
-		return $this->wrap('<'.$tag.'>','</'.$tag.'>');
+		$attributes = [];
+		if (count($attr) > 0) {
+			$attributes[] = '';
+			foreach($attr AS $key => $value) {
+				$attributes[] = sprintf('%s="%s"', $key, $value);
+			}
+		}
+		return $this->wrap('<'. $tag . implode(' ', $attributes) .'>','</'.$tag.'>');
 	}
 
 	function repeat($str, $count = 0)
