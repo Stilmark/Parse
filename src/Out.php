@@ -39,12 +39,6 @@ class Out
 		}
 	}
 
-	function file($filename)
-	{
-		$this->filename = $filename;
-		return $this;
-	}
-
 	function getFilename() {
 		if (!isset($this->filename) || empty($this->filename)) {
 			$this->filename = 'unknown';
@@ -52,13 +46,25 @@ class Out
 		return $this->filename;
 	}
 
-	function dump()
+	function file($filename)
 	{
+		$this->filename = $filename;
+		return $this;
+	}
+
+	function dump($filename = '')
+	{
+		if (!empty($filename)) {
+			$this->filename = $filename;
+		}
 		file_put_contents($this->getFilename(), $this->out);
 	}
 
-	function append()
+	function append($filename = '')
 	{
+		if (!empty($filename)) {
+			$this->filename = $filename;
+		}
 		file_put_contents($this->getFilename(), $this->out, FILE_APPEND);
 	}
 
