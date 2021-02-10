@@ -14,8 +14,8 @@ class Request
 		'country' => 'HTTP_CF_IPCOUNTRY',
 	];
 
-	function __construct() {
-
+	function __construct()
+	{
 		if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
@@ -27,11 +27,19 @@ class Request
 		$this->vars = array_merge(parse_url(self::url()), $this->vars);
 	}
 
-	public static function init() {
+	public static function init()
+	{
 		 return new self;
 	}
 
-	public static function url() {
+	public static function get()
+	{
+		 $Request = self::init();
+		 return $Request->vars;
+	}
+
+	public static function url()
+	{
 		return 'http' . (isset($_SERVER['HTTPS']) && isset($_SERVER['HTTPS']) ? 's':'') . '://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 	}
 

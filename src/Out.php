@@ -20,9 +20,9 @@ class Out
 	{
 		$obj = new Out;
 		$obj->mimetype = 'text/csv';
-		$obj->out = implode(';', array_keys(current($array)));
+		$obj->out = implode(';', array_keys(current($array))).PHP_EOL;
 		foreach($array AS $row) {
-			$obj->out .= implode(';', array_values($row));
+			$obj->out .= implode(';', array_values($row)).PHP_EOL;
 		}
 		return $obj;
 	}
@@ -45,18 +45,20 @@ class Out
 		foreach(array_keys(current($array)) AS $column) {
 			$table->append( Str::make($column)->wrapTag('td') );
 		}
-		$table->wrapTag('tr');
+		$table->wrapTag('tr')->wrapTag('thead');
 
 		// Body
+		$tbody = Str::make();
 		foreach($array AS $row) {
 			$tr = Str::make();
 			foreach($row AS $value) {
 				$tr->append( Str::make($value)->wrapTag('td') );
 			}
 			$tr->wrapTag('tr');
-			$table->append($tr);
+			$tbody->append($tr);
 		}
 
+		$table->append($tbody->wrapTag('tbody'));
 		$obj->out = (String) $table->wrapTag('table', $attr);
 
 		return $obj;
@@ -125,7 +127,7 @@ class Out
     public function __toString()
     {
     	$this->headers();
-        return $this->out.PHP_EOL;
+        return trim($this->out).PHP_EOL;
     }
 
 }
