@@ -12,7 +12,7 @@ class Out
 	{
 		$obj = new Out;
 		$obj->mimetype = 'application/json';
-		$obj->out = json_encode($array).PHP_EOL;
+		$obj->out = json_encode($array);
 		return $obj;
 	}
 
@@ -20,10 +20,18 @@ class Out
 	{
 		$obj = new Out;
 		$obj->mimetype = 'text/csv';
-		$obj->out = implode(';', array_keys(current($array))).PHP_EOL;
+		$obj->out = implode(';', array_keys(current($array)));
 		foreach($array AS $row) {
-			$obj->out .= implode(';', array_values($row)).PHP_EOL;
+			$obj->out .= implode(';', array_values($row));
 		}
+		return $obj;
+	}
+
+	public static function php($array = [])
+	{
+		$obj = new Out;
+		$obj->mimetype = 'application/x-httpd-php';
+		$obj->out = var_export($array, true);
 		return $obj;
 	}
 
@@ -117,7 +125,7 @@ class Out
     public function __toString()
     {
     	$this->headers();
-        return $this->out;
+        return $this->out.PHP_EOL;
     }
 
 }
