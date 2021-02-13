@@ -189,6 +189,15 @@ class Str
 		// todo
 	}
 
+	function beginsWith($str, $case_sensitive = true)
+	{
+		if ($case_sensitive) {
+			return (mb_strpos($this->str, $str) === 0) ? true:false;
+		} else {
+			return (mb_stripos($this->str, $str) === 0) ? true:false;
+		}
+	}
+
     public function __toString()
     {
         return $this->str;
