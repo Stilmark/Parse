@@ -4,7 +4,7 @@ namespace Stilmark\Parse;
 
 class Request
 {
-	private $vars;
+	public $vars;
 	public static $serverVars = [
 		'useragent' => 'HTTP_USER_AGENT',
 		'referer' => 'HTTP_REFERER',
@@ -27,15 +27,9 @@ class Request
 		$this->vars = array_merge(parse_url(self::url()), $this->vars);
 	}
 
-	public static function init()
-	{
-		 return new self;
-	}
-
 	public static function get()
 	{
-		 $Request = self::init();
-		 return $Request->vars;
+		return new Request();
 	}
 
 	public static function url()
@@ -45,12 +39,17 @@ class Request
 
     public static function __callStatic($name, $arguments)
     {
-        $Request = self::init();
-        if (isset($Request->vars[$name])) {
-        	return $Request->vars[$name];
+        $request = new self;
+        if (isset($request->vars[$name])) {
+        	return $request->vars[$name];
         } else {
         	return false;
         }
+    }
+
+    public function __toString()
+	{
+        return json_encode($this->vars);
     }
 
 }
