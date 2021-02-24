@@ -2,6 +2,9 @@
 
 namespace Stilmark\Parse;
 
+// Inspiration
+// https://github.com/tochix/shapes-api/blob/master/src/Service/Http/Request.php
+
 class Request
 {
 	public $vars;
