@@ -48,9 +48,9 @@ class Request
 	{
 		$request = new self;
 		if ($var) {
-			return $request->vars['post'][$var] ?? false;
+			return $request->vars[$global][$var] ?? false;
 		}
-		return $request->vars['post'];
+		return $request->vars[$global] ?? false;
 	}
 
 	public static function get($var = false)
