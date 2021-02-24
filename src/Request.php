@@ -9,6 +9,7 @@ class Request
 		'useragent' => 'HTTP_USER_AGENT',
 		'referer' => 'HTTP_REFERER',
 		'method' => 'REQUEST_METHOD',
+		'uri' => 'REQUEST_URI',
 		'ip' => 'REMOTE_ADDR',
 		'locale' => 'HTTP_ACCEPT_LANGUAGE',
 		'country' => 'HTTP_CF_IPCOUNTRY',
@@ -24,12 +25,39 @@ class Request
 			$this->vars[$static] = isset($_SERVER[$serverVar]) ? $_SERVER[$serverVar]:null;
 		}
 
+		if ($_POST) {
+			$this->vars['post'] = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+		}
+
+		if ($_GET) {
+			$this->vars['get'] = filter_var_array($_GET, FILTER_SANITIZE_STRING);
+		}
+
 		$this->vars = array_merge(parse_url(self::url()), $this->vars);
 	}
 
-	public static function get()
+	public static function all()
 	{
 		return new Request();
+	}
+
+	public static function global_var($global = 'post', $var = false)
+	{
+		$request = new self;
+		if ($var) {
+			return $request->vars['post'][$var] ?? false;
+		}
+		return $request->vars['post'];
+	}
+
+	public static function get($var = false)
+	{
+		return self::global_var('get', $var);
+	}
+
+	public static function post($var = false)
+	{
+		return self::global_var('post', $var);
 	}
 
 	public static function url()
