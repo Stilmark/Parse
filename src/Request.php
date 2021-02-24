@@ -7,7 +7,7 @@ namespace Stilmark\Parse;
 
 class Request
 {
-	public $vars;
+	public $request;
 	public static $serverVars = [
 		'useragent' => 'HTTP_USER_AGENT',
 		'referer' => 'HTTP_REFERER',
@@ -25,18 +25,18 @@ class Request
 		}
 
 		foreach(self::$serverVars AS $static => $serverVar) {
-			$this->vars[$static] = isset($_SERVER[$serverVar]) ? $_SERVER[$serverVar]:null;
+			$this->request[$static] = $_SERVER[$serverVar] ?? null;
 		}
 
 		if ($_POST) {
-			$this->vars['post'] = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+			$this->request['post'] = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 		}
 
 		if ($_GET) {
-			$this->vars['get'] = filter_var_array($_GET, FILTER_SANITIZE_STRING);
+			$this->request['get'] = filter_var_array($_GET, FILTER_SANITIZE_STRING);
 		}
 
-		$this->vars = array_merge(parse_url(self::url()), $this->vars);
+		$this->request = array_merge(parse_url(self::url()), $this->request);
 	}
 
 	public static function all()
@@ -46,11 +46,11 @@ class Request
 
 	public static function global_var($global = 'post', $var = false)
 	{
-		$request = new self;
+		$instance = new self;
 		if ($var) {
-			return $request->vars[$global][$var] ?? false;
+			return $instance->request[$global][$var] ?? false;
 		}
-		return $request->vars[$global] ?? false;
+		return $instance->request[$global] ?? false;
 	}
 
 	public static function get($var = false)
@@ -65,14 +65,14 @@ class Request
 
 	public static function url()
 	{
-		return 'http' . (isset($_SERVER['HTTPS']) && isset($_SERVER['HTTPS']) ? 's':'') . '://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+		return 'http' . (isset($_SERVER['HTTPS']) ? 's':'') . '://'.($_SERVER['SERVER_NAME'] ?? '').($_SERVER['REQUEST_URI'] ?? '');
 	}
 
     public static function __callStatic($name, $arguments)
     {
-        $request = new self;
-        if (isset($request->vars[$name])) {
-        	return $request->vars[$name];
+        $instance = new self;
+        if (isset($instance->request[$name])) {
+        	return $instance->request[$name];
         } else {
         	return false;
         }
@@ -80,7 +80,7 @@ class Request
 
     public function __toString()
 	{
-        return json_encode($this->vars);
+        return json_encode($this);
     }
 
 }
