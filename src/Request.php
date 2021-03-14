@@ -36,7 +36,10 @@ class Request
 			$this->request['get'] = filter_var_array($_GET, FILTER_SANITIZE_STRING);
 		}
 
-		$this->request = array_merge(parse_url(self::url()), $this->request);
+		$parsedUrl = parse_url(self::url());
+		$parsedUrl['path'] = rtrim($parsedUrl['path'], '/');
+
+		$this->request = array_merge($parsedUrl, $this->request);
 	}
 
 	public static function all()
