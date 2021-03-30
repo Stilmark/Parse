@@ -43,7 +43,7 @@ class Route
 			break;
 
 			case FastRoute\Dispatcher::FOUND:
-			return ['ok'];
+			return ['status' => 'ok'];
 			break;
 
 		}
@@ -54,9 +54,9 @@ class Route
 	public static function getRouteMap()
 	{
 		return [
-		    '/' => 	['GET', 'SiteController@home'],
+		    '/' => 	['GET', 'Date@current'],
 		    '/api' => [
-		        '/users' =>         ['GET', 'UserController@index'],
+		        '/users' =>         ['GET', 'Date@current'],
 		        '/user' => [
 		            '/{id:\d+}' =>  ['GET', 'UserController@show'],
 		        ]

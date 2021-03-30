@@ -28,17 +28,19 @@ class Request extends atoum
         $_SERVER['HTTP_CF_IPCOUNTRY'] = 'DK';
         $_SERVER['HTTP_REFERER'] = 'https://www.php.net/manual/en/reserved.variables.php';
 
-        $this->string($Instance::useragent())->isEqualTo($_SERVER['HTTP_USER_AGENT']);
-        $this->string($Instance::method())->isEqualTo($_SERVER['REQUEST_METHOD']);
-        $this->string($Instance::scheme())->isEqualTo('https');
-        $this->string($Instance::host())->isEqualTo($_SERVER['SERVER_NAME']);
-        $this->string($Instance::ip())->isEqualTo($_SERVER['REMOTE_ADDR']);
-        $this->string($Instance::uri())->isEqualTo($_SERVER['REQUEST_URI']);
-        $this->string($Instance::path())->isEqualTo($path);
-        $this->string($Instance::query())->isEqualTo($query);
-        $this->string($Instance::locale())->isEqualTo($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-        $this->string($Instance::country())->isEqualTo($_SERVER['HTTP_CF_IPCOUNTRY']);
-        $this->string($Instance::referer())->isEqualTo($_SERVER['HTTP_REFERER']);
-        
+        $this->
+            string($Instance::useragent())->isEqualTo($_SERVER['HTTP_USER_AGENT'])->
+            string($Instance::method())->isEqualTo($_SERVER['REQUEST_METHOD'])->
+            string($Instance::scheme())->isEqualTo('https')->
+            string($Instance::host())->isEqualTo($_SERVER['SERVER_NAME'])->
+            string($Instance::ip())->isEqualTo($_SERVER['REMOTE_ADDR'])->
+            string($Instance::uri())->isEqualTo($_SERVER['REQUEST_URI'])->
+            string($Instance::path())->isEqualTo($path)->
+            string($Instance::query())->isEqualTo($query)->
+            string($Instance::locale())->isEqualTo($_SERVER['HTTP_ACCEPT_LANGUAGE'])->
+            string($Instance::country())->isEqualTo($_SERVER['HTTP_CF_IPCOUNTRY'])->
+            string($Instance::referer())->isEqualTo($_SERVER['HTTP_REFERER'])
+        ;
+
     }
 }
