@@ -2,7 +2,8 @@
 
 Web application utilities to parse data, input and output. Main classes:
 
-- Str() - String manipulation and conversion
-- Date() -
+- Route() - Route web requests
 - Request() - HTTP Request input parser
+- Str() - String manipulation and conversion
 - Out() - Output formatter
+- Date()
