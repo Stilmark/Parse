@@ -33,12 +33,12 @@ class Route
 		switch ($routeInfo[0]) {
 
 			case FastRoute\Dispatcher::NOT_FOUND:
-	        header("HTTP/1.0 404 Not Found");
+	        header('HTTP/1.0 404 Not Found');
 	        return ['error' => '404 Not Found'];
 			break;
 
 			case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-	        header("HTTP/1.0 405 Method Not Allowed");
+	        header('HTTP/1.0 405 Method Not Allowed');
 	        return ['error' => '405 Method Not Allowed'];
 			break;
 
