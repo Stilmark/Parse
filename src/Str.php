@@ -9,7 +9,7 @@ class Str
 
     public static function make($str = '')
     {
-        return new Str( mb_convert_encoding($str, 'UTF-8', 'auto') );
+        return new Str( $str );
     }
 
     public function __construct($str = '')
