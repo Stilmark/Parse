@@ -33,7 +33,7 @@ class Str
 
 	function capitalize()
 	{
-		$this->str = ucfirst($this->str);
+		$this->str = mb_strtoupper(mb_substr($this->str, 0, 1)) . mb_substr($this->str, 1);;
 		return $this;
 	}
 
