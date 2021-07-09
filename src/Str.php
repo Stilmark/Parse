@@ -7,12 +7,12 @@ class Str
 
 	public $str;
 
-    public static function make($str = '')
+    public static function make(string $str = '')
     {
         return new Str( $str );
     }
 
-    public function __construct($str = '')
+    public function __construct(string $str = '')
     {
         $this->str = mb_convert_encoding($str, 'UTF-8', 'auto');
     }
@@ -52,19 +52,19 @@ class Str
 
 	// Content modifiers
 
-	function trim($chars = '')
+	function trim(string $chars = " \n\r\t\v\0")
 	{
 		$this->str = trim($this->str, $chars);
 		return $this;
 	}
 
-	function trimLeft($chars = '')
+	function trimLeft(string $chars = " \n\r\t\v\0")
 	{
 		$this->str = ltrim($this->str, $chars);
 		return $this;
 	}
 
-	function trimRight($chars = '')
+	function trimRight(string $chars = " \n\r\t\v\0")
 	{
 		$this->str = rtrim($this->str, $chars);
 		return $this;

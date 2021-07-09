@@ -99,17 +99,28 @@ class StrTest extends TestCase
         }
     }
 
-    public function test_string_trim()
+    public function test_string_trim_whitespace()
     {
         $set = [
-            'mary had a Little lamb' => 'maryHadALittleLamb',
-            'Larry & david' => 'larryDavid',
-            'big-bird' => 'bigBird',
-            '122 applé' => '122Appl',
+            " Larry & david     " => "Larry & david",
+            "\t\tThese are a few words :) ...  \n" => "These are a few words :) ...",
+            "\x09Example string\x0A" => "Example string",
         ];
 
         foreach($set AS $str => $expected) {
             $result = Str::make($str)->trim()->str;
+            $this->assertSame($expected, $result);
+        }
+    }
+
+    public function test_string_trim_characters()
+    {
+        $set = [
+            "Larry & david &&" => "Larry & david",
+        ];
+
+        foreach($set AS $str => $expected) {
+            $result = Str::make($str)->trim(' &')->str;
             $this->assertSame($expected, $result);
         }
     }
