@@ -19,31 +19,31 @@ class Str
 
     // Case manipulators
 
-	function upper()
+    public function upper()
 	{
 		$this->str = mb_strtoupper($this->str);
 		return $this;
 	}
 
-	function lower()
+    public function lower()
 	{
 		$this->str = mb_strtolower($this->str);
 		return $this;
 	}
 
-	function capitalize()
+    public function capitalize()
 	{
 		$this->str = mb_strtoupper(mb_substr($this->str, 0, 1)) . mb_substr($this->str, 1);;
 		return $this;
 	}
 
-	function title()
+    public function title()
 	{
 		$this->str = mb_convert_case($this->str, MB_CASE_TITLE, "UTF-8");
 		return $this;
 	}
 
-	function camel() {
+    public function camel() {
 		$firstChar = Str::make($this->str)->slice(0,1)->lower();
 		$this->title()->slice(1)->prepend($firstChar);
 		$this->str = preg_replace('/[^\da-z]/i', '', $this->str);
@@ -52,7 +52,7 @@ class Str
 
 	// Content modifiers
 
-	function trim(string $chars = " \n\r\t\v\0")
+    public function trim(string $chars = " \n\r\t\v\0")
 	{
 		$this->str = trim($this->str, $chars);
 		return $this;
@@ -88,21 +88,26 @@ class Str
 		return $this;
 	}
 
-	function prepend($str)
+	function prepend(string $str)
 	{
 		$this->str = $str . $this->str;
 		return $this;
 	}
 
-	function append($str)
+	function append(string $str)
 	{
 		$this->str = $this->str . $str;
 		return $this;
 	}
 
-	function wrap($left, $right)
+	function wrap(string $before, string $after = '')
 	{
-		$this->str = $left . $this->str . $right;
+
+	    if (empty($after)) {
+	        $after = $before;
+        }
+
+		$this->str = $before . $this->str . $after;
 		return $this;
 	}
 
@@ -197,7 +202,7 @@ class Str
 			return (mb_stripos($this->str, $str) === 0) ? true:false;
 		}
 	}
-
+	
     public function __toString()
     {
         return $this->str;
