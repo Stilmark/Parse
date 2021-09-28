@@ -9,4 +9,16 @@ Web application utilities to parse data, input and output. Main classes:
 
 ## Request
 
-  Request::get('ip');
+    use Stilmark\Parse\Request;
+
+    Request::get('ip');
+
+## Out(put)
+
+    use Stilmark\Parse\Out;
+    
+    echo Out::json( Request::get() );
+
+## Str(ing)
+
+    use Stilmark\Parse\Str;
