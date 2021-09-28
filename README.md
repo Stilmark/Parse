@@ -6,4 +6,7 @@ Web application utilities to parse data, input and output. Main classes:
 - Request() - HTTP Request input parser
 - Str() - String manipulation and conversion
 - Out() - Output formatter
-- Date()
+
+## Request
+
+  Request::get('ip');
