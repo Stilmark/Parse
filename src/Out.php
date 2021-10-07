@@ -66,6 +66,10 @@ class Out
 
 	function headers()
 	{
+        if (headers_sent()) {
+            return;
+        }
+
 		if (!empty($this->mimetype)) {
 			header('Content-Type: '.$this->mimetype.'; charset=UTF-8');
 		}

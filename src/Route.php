@@ -9,6 +9,8 @@ use FastRoute;
 class Route
 {
 
+    const HANDLER_DELIMITER = '@';
+
 	public static function redirect($url)
 	{
 	    header('Location: '.filter_var($url, FILTER_SANITIZE_URL));
@@ -23,28 +25,35 @@ class Route
 		$dispatcher = \FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $routes) use ($route_patterns) {
 		    foreach($route_patterns AS $pattern => $args) {
 		        list($request, $classMethod) = $args;
-		        list($className, $method) = explode('@', $classMethod);
-		        $routes->addRoute($request, $pattern, [$className, $method]);
+		        $routes->addRoute($request, $pattern, $classMethod);
 		    }
 		});
+
+		$Request = Request::new();
 
 		$routeInfo = $dispatcher->dispatch(Request::method(), Request::path());
 
 		switch ($routeInfo[0]) {
 
 			case FastRoute\Dispatcher::NOT_FOUND:
-	        header('HTTP/1.0 404 Not Found');
-	        return ['error' => '404 Not Found'];
-			break;
+                header('HTTP/1.0 404 Not Found');
+                return ['error' => '404 Not Found'];
+                break;
 
 			case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-	        header('HTTP/1.0 405 Method Not Allowed');
-	        return ['error' => '405 Method Not Allowed'];
-			break;
+                header('HTTP/1.0 405 Method Not Allowed');
+                return ['error' => '405 Method Not Allowed'];
+                break;
 
 			case FastRoute\Dispatcher::FOUND:
-			return ['status' => 'ok'];
-			break;
+                list($state, $handler, $vars) = $routeInfo;
+                list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
+
+                $container = (isset($_ENV['NAMESPACE']) ? $_ENV['NAMESPACE'].'\\':'').$class;
+                $data = (new $container())->$method(...array_values($vars));
+
+			    return ['data' => $data, 'route' => $routeInfo];
+			    break;
 
 		}
 
@@ -53,15 +62,11 @@ class Route
 
 	public static function getRouteMap()
 	{
-		return [
-		    '/' => 	['GET', 'Date@current'],
-		    '/api' => [
-		        '/users' =>         ['GET', 'Date@current'],
-		        '/user' => [
-		            '/{id:\d+}' =>  ['GET', 'UserController@show'],
-		        ]
-		    ]
-		];
+	    if (@($routes = include_once 'routes.php')) {
+	        return $routes;
+        } else {
+	        die('Missing routes.php');
+        }
 	}
 
 	public static function compileRoutes($arr, $path = '')
