@@ -22,6 +22,7 @@ class Request
 
 	function __construct()
 	{
+	    // Cloudflare variables override
         if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
         }
@@ -30,26 +31,25 @@ class Request
         }
 	}
 
-	public static function global(String $globalKey = '_GET', Array $vars = [])
+	public static function global( String $globalKey = '_GET', Array $vars = [] )
 	{
 	    $globalVar = $GLOBALS[$globalKey];
 
         if (count($vars)) {
             if (count($vars) == 1) {
-                return $globalVar[self::$serverVars[current($vars)]] ?? false;
+                return $globalVar[current($vars)] ?? false;
             } else {
                 return array_intersect_key($globalVar, array_flip($vars)) ?? [];
             }
         } else {
             return $globalVar ?? false;
         }
-
 	}
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic( String $name, Array $arguments)
     {
         if (isset(self::$serverVars[$name])) {
-            return self::global('_SERVER', [$name]);
+            return self::global('_SERVER', [self::$serverVars[$name]]);
         } elseif (in_array($name, self::$globalsVars)) {
             return self::global('_'.strtoupper($name), $arguments);
         } elseif ($name == 'url') {
