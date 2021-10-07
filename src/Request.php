@@ -17,13 +17,16 @@ class Request
         'lang' => 'LANGUAGE'
 	];
 	public static $globalsVars = [
-	    'post', 'get'
+	    'post', 'get', 'cookie'
     ];
 
 	function __construct()
 	{
         if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+        }
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $_SERVER['HTTPS'] = 'on';
         }
 	}
 
@@ -49,6 +52,11 @@ class Request
             return self::global('_SERVER', [$name]);
         } elseif (in_array($name, self::$globalsVars)) {
             return self::global('_'.strtoupper($name), $arguments);
+        } elseif ($name == 'url') {
+            return 'http'.($_SERVER['HTTPS'] == 'on' ? 's':'').'://'.self::host().'/'.self::uri();
+        } elseif ($name == 'path') {
+            $url = parse_url(self::url());
+            return $url['path'];
         } else {
         	return false;
         }

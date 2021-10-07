@@ -61,7 +61,7 @@ class Route
 
 	public static function getRouteMap()
 	{
-	    if (@($routes = include_once 'routes.php')) {
+	    if (@($routes = include_once $_ENV['ROOT'].'/routes.php')) {
 	        return $routes;
         } else {
 	        die('Missing routes.php');
