@@ -38,12 +38,10 @@ class Route
 			case FastRoute\Dispatcher::NOT_FOUND:
                 header('HTTP/1.0 404 Not Found');
                 return ['error' => '404 Not Found'];
-                break;
 
 			case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 header('HTTP/1.0 405 Method Not Allowed');
                 return ['error' => '405 Method Not Allowed'];
-                break;
 
 			case FastRoute\Dispatcher::FOUND:
                 list($state, $handler, $vars) = $routeInfo;
@@ -53,11 +51,12 @@ class Route
                 $data = (new $container())->$method(...array_values($vars));
 
 			    return ['data' => $data, 'route' => $routeInfo];
-			    break;
+
+            default:
+                header('HTTP/1.0 410 Gone');
+                return ['error' => '410 Gone'];
 
 		}
-
-		return $routeInfo;
 	}
 
 	public static function getRouteMap()
