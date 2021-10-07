@@ -53,7 +53,7 @@ class Request
         } elseif (in_array($name, self::$globalsVars)) {
             return self::global('_'.strtoupper($name), $arguments);
         } elseif ($name == 'url') {
-            return 'http'.($_SERVER['HTTPS'] == 'on' ? 's':'').'://'.self::host().'/'.self::uri();
+            return 'http'.($_SERVER['HTTPS'] == 'on' ? 's':'').'://'.self::host().self::uri();
         } elseif ($name == 'path') {
             $url = parse_url(self::url());
             return $url['path'];

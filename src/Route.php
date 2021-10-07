@@ -29,11 +29,9 @@ class Route
 		    }
 		});
 
-		$Request = Request::new();
-
 		$routeInfo = $dispatcher->dispatch(Request::method(), Request::path());
-
-		switch ($routeInfo[0]) {
+		
+        switch ($routeInfo[0]) {
 
 			case FastRoute\Dispatcher::NOT_FOUND:
                 header('HTTP/1.0 404 Not Found');
