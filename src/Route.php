@@ -46,9 +46,9 @@ class Route
                 list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
 
                 $container = (isset($_ENV['NAMESPACE']) ? $_ENV['NAMESPACE'].'\\':'').$class;
-                $data = (new $container())->$method(...array_values($vars));
+                $view = (new $container())->$method(...array_values($vars));
 
-			    return ['data' => $data, 'route' => $routeInfo];
+			    return ['view' => $view, 'route' => $routeInfo];
 
             default:
                 header('HTTP/1.0 410 Gone');
