@@ -4,7 +4,6 @@ namespace Stilmark\Parse;
 
 class Str
 {
-
 	public $str;
 
     public static function make(string $str = '')
@@ -18,7 +17,6 @@ class Str
     }
 
     // Case manipulators
-
     public function upper()
 	{
 		$this->str = mb_strtoupper($this->str);
@@ -111,7 +109,7 @@ class Str
 		return $this;
 	}
 
-	function wrapTag($tag, $attr = [])
+	function htmlTag($tag, $attr = [])
 	{
 		$attributes = [];
 		if (count($attr) > 0) {
@@ -142,7 +140,6 @@ class Str
 	{
 		$this->str = str_pad($this->str, $max_length, $str);
 	}
-
 
 	// String properties
 
@@ -179,12 +176,14 @@ class Str
 		return implode($this->str, $array);
 	}
 
+	// Comparison : returns boolean
+
 	function isEmpty()
 	{
 		return empty($this->str) ? true:false;
 	}
 
-	function is($str)
+	function equals($str)
 	{
 		return ($this->str == $str) ? true:false;
 	}
