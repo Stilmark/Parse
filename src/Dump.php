@@ -4,40 +4,40 @@ namespace Stilmark\Parse;
 
 use Stilmark\Parse\Str;
 
-class Out
+class Dump
 {
-	public $out, $mimetype, $filename;
+	public $dump, $mimetype, $filename;
 
 	public static function json($array = [])
 	{
-		$obj = new Out;
+		$obj = new Dump;
 		$obj->mimetype = 'application/json';
-		$obj->out = json_encode($array);
+		$obj->dump = json_encode($array);
 		return $obj;
 	}
 
 	public static function csv($array = [])
 	{
-		$obj = new Out;
+		$obj = new Dump;
 		$obj->mimetype = 'text/csv';
-		$obj->out = implode(';', array_keys(current($array))).PHP_EOL;
+		$obj->dump = implode(';', array_keys(current($array))).PHP_EOL;
 		foreach($array AS $row) {
-			$obj->out .= implode(';', array_values($row)).PHP_EOL;
+			$obj->dump .= implode(';', array_values($row)).PHP_EOL;
 		}
 		return $obj;
 	}
 
 	public static function php($array = [])
 	{
-		$obj = new Out;
+		$obj = new Dump;
 		$obj->mimetype = 'application/x-httpd-php';
-		$obj->out = var_export($array, true);
+		$obj->dump = var_export($array, true);
 		return $obj;
 	}
 
 	public static function table($array = [], $attr = [])
 	{
-		$obj = new Out;
+		$obj = new Dump;
 		$obj->mimetype = 'text/html';
 		$table = Str::make();
 
@@ -59,7 +59,7 @@ class Out
 		}
 
 		$table->append($tbody->wrapTag('tbody'));
-		$obj->out = (String) $table->wrapTag('table', $attr);
+		$obj->dump = (String) $table->wrapTag('table', $attr);
 
 		return $obj;
 	}
@@ -76,7 +76,7 @@ class Out
 
 		if (!empty($this->filename)) {
 			header('Content-Disposition: attachment; filename='.$this->filename);
-			header('Content-length: '.mb_strlen($this->out));
+			header('Content-length: '.mb_strlen($this->dump));
 		}
 	}
 
@@ -98,7 +98,7 @@ class Out
 		if (!empty($filename)) {
 			$this->filename = $filename;
 		}
-		file_put_contents($this->getFilename(), $this->out);
+		file_put_contents($this->getFilename(), $this->dump);
 	}
 
 	function append($filename = '')
@@ -106,7 +106,7 @@ class Out
 		if (!empty($filename)) {
 			$this->filename = $filename;
 		}
-		file_put_contents($this->getFilename(), $this->out, FILE_APPEND);
+		file_put_contents($this->getFilename(), $this->dump, FILE_APPEND);
 	}
 
 	function log($filename = '')
@@ -117,21 +117,21 @@ class Out
 				$this->filename->prepend($_SERVER['DOCUMENT_ROOT'].$_ENV['LOGS']);
 			}
 		}
-		file_put_contents($this->getFilename(), $this->out, FILE_APPEND);
+		file_put_contents($this->getFilename(), $this->dump, FILE_APPEND);
 	}
 
 	function download()
 	{
 		$this->filename = $this->getFilename();
 		$this->headers();
-		echo $this->out;
+		echo $this->dump;
 		exit;
 	}
 
     public function __toString()
     {
     	$this->headers();
-        return trim($this->out).PHP_EOL;
+        return trim($this->dump).PHP_EOL;
     }
 
 }
