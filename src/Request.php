@@ -14,7 +14,8 @@ class Request
 		'locale' => 'HTTP_ACCEPT_LANGUAGE',
 		'country' => 'HTTP_CF_IPCOUNTRY',
         'time' => 'REQUEST_TIME',
-        'lang' => 'LANGUAGE'
+        'lang' => 'LANGUAGE',
+        'args' => 'URI_ARGUMENTS'
 	];
 	public static $globalsVars = [
 	    'post', 'get', 'cookie'
@@ -48,8 +49,18 @@ class Request
 
     public static function __callStatic( String $name, Array $arguments)
     {
+        // Check if arguments are multidimensional
+        if (count($arguments) != count($arguments, COUNT_RECURSIVE)) {
+            $arguments = current($arguments);
+        }
+
         if (isset(self::$serverVars[$name])) {
-            return self::global('_SERVER', [self::$serverVars[$name]]);
+            if (count($arguments)) {
+                return self::global(self::$serverVars[$name], $arguments);
+            } else {
+                return self::global('_SERVER', [self::$serverVars[$name]]);
+            }
+
         } elseif (in_array($name, self::$globalsVars)) {
             return self::global('_'.strtoupper($name), $arguments);
         } elseif ($name == 'url') {

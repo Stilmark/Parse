@@ -13,10 +13,6 @@ class Dump
 		$obj = new Dump;
 		$obj->mimetype = 'application/json';
 
-		if ($flag == 'pretty') {
-			$flag = JSON_PRETTY_PRINT;
-		}
-
 		$obj->data = json_encode($array, $flag);
 		return $obj;
 	}

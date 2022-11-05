@@ -63,6 +63,8 @@ class Route
                 list($state, $handler, $vars) = $routeInfo;
                 list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
 
+                $GLOBALS['URI_ARGUMENTS'] = $vars;
+
                 $container = (isset($_ENV['NAMESPACE']) ? $_ENV['NAMESPACE'].'\\':'').$class;
                 $view = (new $container())->$method(...array_values($vars));
 
