@@ -51,6 +51,14 @@ class Str
 
 	public function snake()
 	{
+		$this->trimInside($this->str)->trim()->lower()->replace(' ', '_');
+		return $this;
+	}
+
+	public function kebab()
+	{
+		$this->trimInside($this->str)->trim()->lower()->replace(' ', '-');
+		return $this;
 	}
 
 	public function pascal()
@@ -59,7 +67,12 @@ class Str
 		return $this;
 	}
 
-	// Content modifiers
+	public function slug()
+	{
+		// todo
+	}
+
+	// Content slimmers
 
     public function trim(string $chars = " \n\r\t\v\0")
 	{
@@ -85,15 +98,17 @@ class Str
 		return $this;
 	}
 
-	function replace($find, $replace)
-	{
-		$this->str = str_replace($find, $replace, $this->str);
-		return $this;
-	}
-
 	function slice($start = 0, $length = null)
 	{
 		$this->str = mb_substr($this->str, $start, $length);
+		return $this;
+	}
+
+	// Content extenders
+
+	function append(string $str, bool $space = false)
+	{
+		$this->str = $this->str . ($space ? ' ':'') . $str;
 		return $this;
 	}
 
@@ -103,13 +118,7 @@ class Str
 		return $this;
 	}
 
-	function append(string $str, bool $space = false)
-	{
-		$this->str = $this->str . ($space ? ' ':'') . $str;
-		return $this;
-	}
-
-	function wrap(string $before, string $after = '')
+	function wrap(string $before = '', string $after = '')
 	{
 
 	    if (empty($after)) {
@@ -118,18 +127,6 @@ class Str
 
 		$this->str = $before . $this->str . $after;
 		return $this;
-	}
-
-	function htmlTag($tag, $attr = [])
-	{
-		$attributes = [];
-		if (count($attr) > 0) {
-			$attributes[] = '';
-			foreach($attr AS $key => $value) {
-				$attributes[] = sprintf('%s="%s"', $key, $value);
-			}
-		}
-		return $this->wrap('<'. $tag . implode(' ', $attributes) .'>','</'.$tag.'>');
 	}
 
 	function repeat($str, $count = 0)
@@ -199,12 +196,12 @@ class Str
 		return ($this->str == $str) ? true:false;
 	}
 
-	function contains($str)
+	function contains($str, $case_sensitive = false)
 	{
 		// todo
 	}
 
-	function beginsWith($str, $case_sensitive = true)
+	function beginsWith($str, $case_sensitive = false)
 	{
 		if ($case_sensitive) {
 			return (mb_strpos($this->str, $str) === 0) ? true:false;
@@ -212,6 +209,27 @@ class Str
 			return (mb_stripos($this->str, $str) === 0) ? true:false;
 		}
 	}
+
+	// Where to put?
+
+	function replace($find, $replace)
+	{
+		$this->str = str_replace($find, $replace, $this->str);
+		return $this;
+	}
+
+	function htmlTag($tag, $attr = [])
+	{
+		$attributes = [];
+		if (count($attr) > 0) {
+			$attributes[] = '';
+			foreach($attr AS $key => $value) {
+				$attributes[] = sprintf('%s="%s"', $key, $value);
+			}
+		}
+		return $this->wrap('<'. $tag . implode(' ', $attributes) .'>','</'.$tag.'>');
+	}
+
 	
     public function __toString()
     {
