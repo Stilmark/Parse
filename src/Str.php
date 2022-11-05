@@ -6,7 +6,7 @@ class Str
 {
 	public $str;
 
-    public static function make(string $str = '')
+    public static function set(string $str = '')
     {
         return new Str( $str );
     }
@@ -41,10 +41,21 @@ class Str
 		return $this;
 	}
 
-    public function camel() {
-		$firstChar = Str::make($this->str)->slice(0,1)->lower();
+    public function camel()
+    {
+		$firstChar = Str::set($this->str)->slice(0,1)->lower();
 		$this->title()->slice(1)->prepend($firstChar);
 		$this->str = preg_replace('/[^\da-z]/i', '', $this->str);
+		return $this;
+	}
+
+	public function snake()
+	{
+	}
+
+	public function pascal()
+	{
+		$this->camel($this->str)->capitalize();
 		return $this;
 	}
 
@@ -86,15 +97,15 @@ class Str
 		return $this;
 	}
 
-	function prepend(string $str)
+	function prepend(string $str, bool $space = false)
 	{
-		$this->str = $str . $this->str;
+		$this->str = $str . ($space ? ' ':'') . $this->str;
 		return $this;
 	}
 
-	function append(string $str)
+	function append(string $str, bool $space = false)
 	{
-		$this->str = $this->str . $str;
+		$this->str = $this->str . ($space ? ' ':'') . $str;
 		return $this;
 	}
 
