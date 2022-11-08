@@ -64,8 +64,7 @@ class Route
                 list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
 
                 $GLOBALS['URI_ARGUMENTS'] = $vars;
-
-                $container = (isset($_ENV['NAMESPACE']) ? $_ENV['NAMESPACE'].'\\':'').$class;
+                $container = (isset($_ENV['CONTROLLER_NAMESPACE']) ? $_ENV['CONTROLLER_NAMESPACE'].'\\':'').$class;
                 $view = (new $container())->$method(...array_values($vars));
 
                 if (isset($view['error'])) {
@@ -86,10 +85,10 @@ class Route
 
 	public static function getRouteMap()
 	{
-	    if (@($routes = include_once $_ENV['ROOT'].'/routes.php')) {
+	    if (@($routes = include_once $_ENV['APPROOT'].'/routes.php')) {
 	        return $routes;
         } else {
-	        die('Missing routes.php');
+	        die('Missing ' .  $_ENV['APPROOT'].'/routes.php);
         }
 	}
 
