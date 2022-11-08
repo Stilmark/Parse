@@ -64,7 +64,7 @@ class Route
                 list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
 
                 $GLOBALS['URI_ARGUMENTS'] = $vars;
-                $container = ($_ENV['NAMESPACE'] ?? '').'\\'.($_ENV['CONTROLLER'] ?? '').'\\'.$class;
+                $container = ($_ENV['NAMESPACE'] ?? '').($_ENV['CONTROLLER'] ?? '').'\\'.$class;
                 $response = (new $container())->$method();
 
                 if (isset($response['error'])) {
