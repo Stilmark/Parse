@@ -87,7 +87,7 @@ class Route
 	    if (@($routes = include_once $_ENV['APPROOT'].'/routes.php')) {
 	        return $routes;
         } else {
-	        die('Missing ' .  $_ENV['APPROOT'].'/routes.php);
+	        die('Missing: '.$_ENV['APPROOT'].'/routes.php');
         }
 	}
 
