@@ -64,22 +64,21 @@ class Route
                 list($class, $method) = explode(self::HANDLER_DELIMITER, $handler, 2);
 
                 $GLOBALS['URI_ARGUMENTS'] = $vars;
-                $container = (isset($_ENV['CONTROLLER_NAMESPACE']) ? $_ENV['CONTROLLER_NAMESPACE'].'\\':'').$class;
-                $view = (new $container())->$method(...array_values($vars));
+                $container = ($_ENV['NAMESPACE'] ?? '').'\\'.($_ENV['CONTROLLER'] ?? '').'\\'.$class;
+                $response = (new $container())->$method();
 
-                if (isset($view['error'])) {
-                    if (!isset($view['message'])) {
-                        $view['message'] = '';
+                if (isset($response['error'])) {
+                    if (!isset($response['message'])) {
+                        $response['message'] = '';
                     }
-                    return self::errorResponse($view['error'], $view['message']);
+                    return self::errorResponse($response['error'], $response['message']);
                 } else {
                     self::header(200);
-                    return $view;
+                    return $response;
                 }
 
             default:
                 return self::errorResponse(410);
-
 		}
 	}
 
