@@ -218,6 +218,11 @@ class Str
 		return $this;
 	}
 
+	function strip($find) {
+		$this->replace($find, '', $this->str);
+		return $this;
+	}
+
 	function htmlTag($tag, $attr = [])
 	{
 		$attributes = [];
