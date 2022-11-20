@@ -8,7 +8,7 @@ class Dump
 {
 	public $data, $mimetype, $filename;
 
-	public static function json($array = [], $flag = false)
+	public static function json($array = [], $flag = JSON_PRETTY_PRINT)
 	{
 		$obj = new Dump;
 		$obj->mimetype = 'application/json';
