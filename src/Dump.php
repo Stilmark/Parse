@@ -8,8 +8,10 @@ class Dump
 {
 	public $data, $mimetype, $filename;
 
-	public static function json($array = [], $flag = JSON_PRETTY_PRINT)
-	{
+	public static function json(
+		$array = [], 
+		$flag = JSON_PRETTY_PRINT
+	){
 		$obj = new Dump;
 		$obj->mimetype = 'application/json';
 
@@ -17,8 +19,9 @@ class Dump
 		return $obj;
 	}
 
-	public static function csv($array = [])
-	{
+	public static function csv(
+		$array = []
+	){
 		$obj = new Dump;
 		$obj->mimetype = 'text/csv';
 		$obj->data = implode(';', array_keys(current($array))).PHP_EOL;
@@ -28,32 +31,35 @@ class Dump
 		return $obj;
 	}
 
-	public static function php($array = [])
-	{
+	public static function php(
+		$array = []
+	){
 		$obj = new Dump;
 		$obj->mimetype = 'application/x-httpd-php';
 		$obj->data = var_export($array, true);
 		return $obj;
 	}
 
-	public static function table($array = [], $attr = [])
-	{
+	public static function table(
+		$array = [],
+		$attr = []
+	){
 		$obj = new Dump;
 		$obj->mimetype = 'text/html';
-		$table = Str::make();
+		$table = Str::set();
 
 		// Header
 		foreach(array_keys(current($array)) AS $column) {
-			$table->append( Str::make($column)->wrapTag('td') );
+			$table->append( Str::set($column)->wrapTag('td') );
 		}
 		$table->wrapTag('tr')->wrapTag('thead');
 
 		// Body
-		$tbody = Str::make();
+		$tbody = Str::set();
 		foreach($array AS $row) {
-			$tr = Str::make();
+			$tr = Str::set();
 			foreach($row AS $value) {
-				$tr->append( Str::make($value)->wrapTag('td') );
+				$tr->append( Str::set($value)->wrapTag('td') );
 			}
 			$tr->wrapTag('tr');
 			$tbody->append($tr);
@@ -88,32 +94,36 @@ class Dump
 		return $this->filename;
 	}
 
-	function file($filename)
-	{
+	function file(
+		$filename
+	){
 		$this->filename = $filename;
 		return $this;
 	}
 
-	function write($filename = '')
-	{
+	function write(
+		$filename = ''
+	){
 		if (!empty($filename)) {
 			$this->filename = $filename;
 		}
 		file_put_contents($this->getFilename(), $this->data);
 	}
 
-	function append($filename = '')
-	{
+	function append(
+		$filename = ''
+	){
 		if (!empty($filename)) {
 			$this->filename = $filename;
 		}
 		file_put_contents($this->getFilename(), $this->data, FILE_APPEND);
 	}
 
-	function log($filename = '')
-	{
+	function log(
+		$filename = ''
+	){
 		if (!empty($filename)) {
-			$this->filename = Str::make($filename);
+			$this->filename = Str::set($filename);
 			if (isset($_ENV['LOGS'])) {
 				$this->filename->prepend($_SERVER['DOCUMENT_ROOT'].$_ENV['LOGS']);
 			}
