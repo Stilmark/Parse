@@ -4,7 +4,7 @@ namespace Stilmark\Parse;
 
 use Stilmark\Parse\Dump;
 
-class DD
+class Vardump
 {
 	public static function json(
 		$array = []

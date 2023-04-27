@@ -24,10 +24,20 @@ class Dump
 	){
 		$obj = new Dump;
 		$obj->mimetype = 'text/csv';
-		$obj->data = implode(';', array_keys(current($array))).PHP_EOL;
-		foreach($array AS $row) {
-			$obj->data .= implode(';', array_values($row)).PHP_EOL;
+		if (!is_array($array) || empty($array)) {
+			return $array.PHP_EOL;
 		}
+		if (count($array) == count($array, COUNT_RECURSIVE)) {
+			$obj->data = implode(';', array_keys($array)).PHP_EOL;
+			$obj->data .= implode(';', array_values($array)).PHP_EOL;
+		} else {
+			$obj->data = implode(';', array_keys(current($array))).PHP_EOL;
+			foreach($array AS $row) {
+				$obj->data .= implode(';', array_values($row)).PHP_EOL;
+			}
+		}
+		
+
 		return $obj;
 	}
 
