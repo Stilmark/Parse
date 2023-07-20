@@ -7,9 +7,10 @@ use Stilmark\Parse\Dump;
 class Vardump
 {
 	public static function json(
-		$array = []
+		$array = [],
+		$flag = false
 	){
-		echo Dump::json($array, false);
+		echo Dump::json($array, $flag);
 		exit;
 	}
 
