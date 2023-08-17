@@ -98,6 +98,12 @@ class Str
 		return $this;
 	}
 
+	function trimSpaces()
+	{
+		$this->str = preg_replace('/\s+/', '', trim($this->str));
+		return $this;
+	}
+
 	function slice($start = 0, $length = null)
 	{
 		$this->str = mb_substr($this->str, $start, $length);
