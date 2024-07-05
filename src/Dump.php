@@ -20,10 +20,18 @@ class Dump
 	}
 
 	public static function csv(
-		$array = []
+		$array = [],
+		$filename = null
 	){
 		$obj = new Dump;
 		$obj->mimetype = 'text/csv';
+
+		if (is_null($filename)) {
+			$filename = basename($_SERVER['SCRIPT_FILENAME'], '.php').'.csv';
+		}
+
+		$obj->file($filename);
+
 		if (!is_array($array) || empty($array)) {
 			return $array.PHP_EOL;
 		}

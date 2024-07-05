@@ -15,9 +15,10 @@ class Vardump
 	}
 
 	public static function csv(
-		$array = []
+		Array $array = [],
+		String $filename = null
 	){
-		echo Dump::csv($array);
+		echo Dump::csv($array, $filename);
 		exit;
 	}
 
