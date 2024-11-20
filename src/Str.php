@@ -6,12 +6,12 @@ class Str
 {
 	public $str;
 
-    public static function set(string $str = '')
+    public static function set(?string $str = '')
     {
         return new Str( $str );
     }
 
-    public function __construct(string $str = '')
+    public function __construct(?string $str = '')
     {
         $this->str = mb_convert_encoding($str, 'UTF-8', 'auto');
     }
