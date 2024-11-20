@@ -68,23 +68,23 @@ class Dump
 
 		// Header
 		foreach(array_keys(current($array)) AS $column) {
-			$table->append( Str::set($column)->wrapTag('td') );
+			$table->append( Str::set($column)->htmlTag('td') );
 		}
-		$table->wrapTag('tr')->wrapTag('thead');
+		$table->htmlTag('tr')->htmlTag('thead');
 
 		// Body
 		$tbody = Str::set();
 		foreach($array AS $row) {
 			$tr = Str::set();
 			foreach($row AS $value) {
-				$tr->append( Str::set($value)->wrapTag('td') );
+				$tr->append( Str::set($value)->htmlTag('td') );
 			}
-			$tr->wrapTag('tr');
+			$tr->htmlTag('tr');
 			$tbody->append($tr);
 		}
 
-		$table->append($tbody->wrapTag('tbody'));
-		$obj->data = (String) $table->wrapTag('table', $attr);
+		$table->append($tbody->htmlTag('tbody'));
+		$obj->data = (String) $table->htmlTag('table', $attr);
 
 		return $obj;
 	}
